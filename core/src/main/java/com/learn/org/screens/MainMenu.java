@@ -13,14 +13,17 @@ public class MainMenu extends CubocScreen {
     private TextureRegion title;
     private SpriteBatch batch;
     private float time;
+//    private String imageName;
 
     public MainMenu(Game game) {
         super(game);
         this.time = 0;
+//        this.imageName = imageName;
     }
 
     @Override
     public void show() {
+        Gdx.app.debug("cuboc", "iniciando funcion show");
         setTitle(
                 new TextureRegion(
                         new Texture(
@@ -31,24 +34,29 @@ public class MainMenu extends CubocScreen {
 
     @Override
     public void render(float delta) {
+//        Gdx.app.debug("cuboc", "iniciando funcion show con fps: " + Float.toString(1/delta));
+//        Gdx.app.debug("cuboc", "iniciando funcion show con fps: " + getTime());
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getBatch().begin();
+//        getBatch().setColor(1.0f, 1.0f, 1.0f, getOpacity(getTime()));
         getBatch().draw(getTitle(), 0, 0);
         getBatch().end();
         setTime(getTime() + delta);
         if (getTime() > 1) {
-            Gdx.app.debug("Cubocy", "time is: " + delta);
             if (Gdx.input.isKeyPressed(Keys.ANY_KEY) || Gdx.input.justTouched()) {
 
-                Gdx.app.debug("Cubocy", "Generate a new main menu");
-                getGame().setScreen(new MainMenu(getGame()));
+                Gdx.app.debug("cuboc", "Generate a new main menu");
+                getGame().setScreen(new IntroScreen(getGame()));
             }
+        }
+        if (getTime() > 5){
+            setTime(0f);
         }
     }
 
     @Override
     public void hide() {
-        Gdx.app.debug("Cubocy", "dispose main menu");
+        Gdx.app.debug("cuboc", "dispose main menu");
         getBatch().dispose();
         getTitle().getTexture().dispose();
     }
@@ -76,5 +84,37 @@ public class MainMenu extends CubocScreen {
     public void setTime(float time) {
         this.time = time;
     }
+
+    public float getOpacity(float x) {
+        float y;
+
+//        y = x * (10 - x) / 25;
+        y = 4 * x * (5 - x) / 25;
+
+        return y;
+    }
+    
+    public boolean getRandomBoolean() {
+       return Math.random() < 0.5;
+   }
+    
+    public String getPaku(){
+        String result;
+        if (getRandomBoolean()){
+            result = "title3.png";
+        } else {
+            result = "pakupaku480.png";
+        }
+        
+        return result;
+    }
+
+//    public String getImageName() {
+//        return imageName;
+//    }
+//
+//    public void setImageName(String imageName) {
+//        this.imageName = imageName;
+//    }
 
 }
