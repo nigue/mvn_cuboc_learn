@@ -1,4 +1,4 @@
-package com.learn.org.screens;
+package com.learn.org.core.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;

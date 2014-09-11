@@ -1,4 +1,4 @@
-package com.learn.org.screens;
+package com.learn.org.core.screens;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
@@ -21,13 +21,14 @@ public class IntroScreen extends CubocScreen {
 
     @Override
     public void show() {
-        Gdx.app.debug("IntroScreen.show", "Intro Screen - show");
+        Gdx.app.debug("Cuboc", "Intro Screen - show");
+//        Gdx.app.debug("Cuboc", Gdx.files.internal("intro.png").toString());
         setIntro(
                 new TextureRegion(
                         new Texture(
                                 Gdx.files.internal("intro.png")), 0, 0, 480, 320));
         setBatch(new SpriteBatch());
-        Gdx.app.debug("IntroScreen.show", "seteando variables de intro");
+        Gdx.app.debug("Cuboc", "seteando variables de intro");
         getBatch().getProjectionMatrix().setToOrtho2D(0, 0, 480, 320);
     }
 
@@ -40,6 +41,7 @@ public class IntroScreen extends CubocScreen {
         setTime(getTime() + delta);
         if (getTime() > 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
+                Gdx.app.debug("Cuboc", "ha sido apretada la pantalla o tambien ha sido apretado un boton");
 //                getGame().setScreen(new GameScreen(getGame()));
             }
         }
@@ -47,7 +49,7 @@ public class IntroScreen extends CubocScreen {
 
     @Override
     public void hide() {
-        Gdx.app.debug("cuboc", "Intro Screen - hide");
+        Gdx.app.debug("Cuboc", "Intro Screen - hide");
         getBatch().dispose();
         getIntro().getTexture().dispose();
     }
