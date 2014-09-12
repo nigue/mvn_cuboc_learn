@@ -1,6 +1,7 @@
 package com.learn.org.core.data;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.CubeValues;
@@ -44,6 +45,20 @@ public class Cube extends CubeValues {
         float x1 = (Gdx.input.getX(1) / (float) Gdx.graphics.getWidth()) * 480;
         float y0 = 320 - (Gdx.input.getY(0) / (float) Gdx.graphics.getHeight()) * 320;
         float y1 = 320 - (Gdx.input.getY(1) / (float) Gdx.graphics.getHeight()) * 320;
+        boolean controlButton = (Gdx.input.isTouched(0) && controllButtonRect.contains(x0, y0))
+                || (Gdx.input.isTouched(1) && controllButtonRect.contains(x1, y1));
+        boolean followButton = (Gdx.input.isTouched(0) && followButtonRect.contains(x0, y0))
+                || (Gdx.input.isTouched(1) && followButtonRect.contains(x1, y1));
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controlButton) && getState() == getFOLLOW() && getStateTime() > 0.5f) {
+            setStateTime(0);
+            setState(getCONTROLLED());
+            return;
+        }
+        if ((Gdx.input.isKeyPressed(Input.Keys.SPACE) || controlButton) && getState() == getCONTROLLED() && getStateTime() > 0.5f) {
+            setStateTime(0);
+            setState(getFIXED());
+            return;
+        }
     }
 
     public Map getMap() {
