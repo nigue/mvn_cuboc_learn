@@ -22,7 +22,6 @@ public class IntroScreen extends CubocScreen {
     @Override
     public void show() {
         Gdx.app.debug("Cuboc", "Intro Screen - show");
-//        Gdx.app.debug("Cuboc", Gdx.files.internal("intro.png").toString());
         setIntro(
                 new TextureRegion(
                         new Texture(
@@ -42,7 +41,7 @@ public class IntroScreen extends CubocScreen {
         if (getTime() > 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
                 Gdx.app.debug("Cuboc", "Intro Screen - ha sido apretada la pantalla o tambien ha sido apretado un boton");
-//                getGame().setScreen(new GameScreen(getGame()));
+                getGame().setScreen(new GameScreen(getGame()));
             }
         }
     }
