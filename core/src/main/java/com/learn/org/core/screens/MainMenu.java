@@ -8,27 +8,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
-public class IntroScreen extends CubocScreen {
+public class MainMenu extends CubocScreen {
 
-    private TextureRegion intro;
+    private TextureRegion title;
     private SpriteBatch batch;
     private float time;
 
-    public IntroScreen(Game Game) {
+    public MainMenu(Game Game) {
         super(Game);
-        this.time = 0;
+        this.time = 0f;
     }
 
     @Override
     public void show() {
-        Gdx.app.debug("Cuboc", "Intro Screen - show");
-//        Gdx.app.debug("Cuboc", Gdx.files.internal("intro.png").toString());
-        setIntro(
-                new TextureRegion(
-                        new Texture(
-                                Gdx.files.internal("intro.png")), 0, 0, 480, 320));
+        setTitle(new TextureRegion(new Texture(Gdx.files.internal("title.png")), 0, 0, 480, 320));
         setBatch(new SpriteBatch());
-        Gdx.app.debug("Cuboc", "Intro Screen - seteando variables de intro");
         getBatch().getProjectionMatrix().setToOrtho2D(0, 0, 480, 320);
     }
 
@@ -36,30 +30,30 @@ public class IntroScreen extends CubocScreen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         getBatch().begin();
-        getBatch().draw(getIntro(), 0, 0);
+        getBatch().draw(title, 0, 0);
         getBatch().end();
+
         setTime(getTime() + delta);
         if (getTime() > 1) {
             if (Gdx.input.isKeyPressed(Input.Keys.ANY_KEY) || Gdx.input.justTouched()) {
-                Gdx.app.debug("Cuboc", "Intro Screen - ha sido apretada la pantalla o tambien ha sido apretado un boton");
-//                getGame().setScreen(new GameScreen(getGame()));
+                getGame().setScreen(new IntroScreen(getGame()));
             }
         }
     }
 
     @Override
     public void hide() {
-        Gdx.app.debug("Cuboc", "Intro Screen - hide");
+        Gdx.app.debug("Cuboc", "MainMenu - dispose main menu");
         getBatch().dispose();
-        getIntro().getTexture().dispose();
+        getTitle().getTexture().dispose();
     }
 
-    public TextureRegion getIntro() {
-        return intro;
+    public TextureRegion getTitle() {
+        return title;
     }
 
-    public void setIntro(TextureRegion intro) {
-        this.intro = intro;
+    public void setTitle(TextureRegion title) {
+        this.title = title;
     }
 
     public SpriteBatch getBatch() {
@@ -77,5 +71,4 @@ public class IntroScreen extends CubocScreen {
     public void setTime(float time) {
         this.time = time;
     }
-
 }
