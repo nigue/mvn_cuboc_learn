@@ -12,4 +12,11 @@ public class Map extends MapValues {
 
     }
 
+    public Bob getBob() {
+        return bob;
+    }
+
+    public int[][] getTiles() {
+        return tiles;
+    }
 }
