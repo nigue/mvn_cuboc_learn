@@ -12,11 +12,19 @@ public class Map extends MapValues {
 
     }
 
+    public boolean isDeadly(int tileId) {
+        return tileId == getSPIKES();
+    }
+
     public Bob getBob() {
         return bob;
     }
 
     public int[][] getTiles() {
         return tiles;
+    }
+
+    public Cube getCube() {
+        return cube;
     }
 }
