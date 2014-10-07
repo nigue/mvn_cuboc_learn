@@ -98,7 +98,7 @@ public class Cube extends CubeValues {
             }
         }
 
-        setStateTime(deltaTime);
+        setStateTime(getStateTime() + deltaTime);
     }
 
     private void processKeys() {
