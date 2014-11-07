@@ -20,6 +20,10 @@ public class Map extends MapValues {
         return tileId == getSPIKES();
     }
 
+    boolean match(int src, int dst) {
+        return src == dst;
+    }
+
     public Bob getBob() {
         return bob;
     }
