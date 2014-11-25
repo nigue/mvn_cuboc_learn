@@ -2,6 +2,7 @@ package com.learn.org.core.data;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.FPSLogger;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
@@ -112,29 +113,60 @@ public class MapRenderer {
         setBobRight(new Animation(0.1f, split[0], split[1]));
         setBobLeft(new Animation(0.1f, mirror[0], mirror[1]));
         setBobJumpRight(new Animation(0.1f, split[2], split[3]));
-        
-		bobJumpLeft = new Animation(0.1f, mirror[2], mirror[3]);
-		bobIdleRight = new Animation(0.5f, split[0], split[4]);
-		bobIdleLeft = new Animation(0.5f, mirror[0], mirror[4]);
-		bobDead = new Animation(0.2f, split[0]);
-		split = new TextureRegion(bobTexture).split(20, 20)[1];
-		cube = split[0];
-		cubeFixed = new Animation(1, split[1], split[2], split[3], split[4], split[5]);
-		split = new TextureRegion(bobTexture).split(20, 20)[2];
-		cubeControlled = split[0];
-		spawn = new Animation(0.1f, split[4], split[3], split[2], split[1]);
-		dying = new Animation(0.1f, split[1], split[2], split[3], split[4]);
-		dispenser = split[5];
-		split = new TextureRegion(bobTexture).split(20, 20)[3];
-		rocket = new Animation(0.1f, split[0], split[1], split[2], split[3]);
-		rocketPad = split[4];
-		split = new TextureRegion(bobTexture).split(20, 20)[4];
-		rocketExplosion = new Animation(0.1f, split[0], split[1], split[2], split[3], split[4], split[4]);
-		split = new TextureRegion(bobTexture).split(20, 20)[5];
-		endDoor = split[2];
-		movingSpikes = split[0];
-		laser = split[1];
+        setBobJumpLeft(new Animation(0.1f, mirror[2], mirror[3]));
+        setBobIdleRight(new Animation(0.5f, split[0], split[4]));
+        setBobIdleLeft(new Animation(0.5f, mirror[0], mirror[4]));
+        setBobDead(new Animation(0.2f, split[0]));
+        split = new TextureRegion(bobTexture).split(20, 20)[1];
+        setCube(split[0]);
+        setCubeFixed(new Animation(1, split[1], split[2], split[3], split[4], split[5]));
+        split = new TextureRegion(bobTexture).split(20, 20)[2];
+        setCubeControlled(split[0]);
+        setSpawn(new Animation(0.1f, split[4], split[3], split[2], split[1]));
+        setDying(new Animation(0.1f, split[1], split[2], split[3], split[4]));
+        setDispenser(split[5]);
+        split = new TextureRegion(bobTexture).split(20, 20)[3];
+        setRocket(new Animation(0.1f, split[0], split[1], split[2], split[3]));
+        setRocketPad(split[4]);
+        split = new TextureRegion(bobTexture).split(20, 20)[4];
+        setRocketExplosion(new Animation(0.1f, split[0], split[1], split[2], split[3], split[4], split[4]));
+        split = new TextureRegion(bobTexture).split(20, 20)[5];
+        setEndDoor(split[2]);
+        setMovingSpikes(split[0]);
+        setLaser(split[1]);
+    }
 
+    public void render(float deltaTime) {
+        if (getMap().getCube().getState() != Cube.getCONTROLLED()) {
+            getCam().position.lerp(getLerpTarget().set(getMap().getBob().getPos().x, getMap().getBob().getPos().y, 0), 2f * deltaTime);
+        } else {
+            getCam().position.lerp(getLerpTarget().set(getMap().getCube().getPos().x, getMap().getCube().getPos().y, 0), 2f * deltaTime);
+        }
+        getCam().update();
+
+        renderLaserBeams();
+    }
+
+    private void renderLaserBeams() {
+        getCam().update(false);
+        getRenderer().begin(getCam().combined, GL20.GL_LINES);
+        for (int i = 0; i < getMap().getLasers().size; i++) {
+            Laser laser = getMap().getLasers().get(i);
+            float sx = laser.getStartPoint().x, sy = laser.getStartPoint().y;
+            float ex = laser.getCappedEndPoint().x, ey = laser.getCappedEndPoint().y;
+            getRenderer().color(0, 1, 0, 1);
+            getRenderer().vertex(sx, sy, 0);
+            getRenderer().color(0, 1, 0, 1);
+            getRenderer().vertex(ex, ey, 0);
+        }
+        getRenderer().end();
+    }
+
+    public void dispose() {
+        getCache().dispose();
+        getBatch().dispose();
+        getTile().getTexture().dispose();
+        getCube().getTexture().dispose();
     }
 
     public Map getMap() {
