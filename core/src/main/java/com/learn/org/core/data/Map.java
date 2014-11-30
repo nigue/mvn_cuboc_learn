@@ -18,6 +18,7 @@ public class Map extends MapValues {
     private EndDoor endDoor;
 
     public Map() {
+
         this.dispensers = new Array<Dispenser>();
         this.activeDispenser = null;
         this.rockets = new Array<Rocket>();
@@ -28,11 +29,20 @@ public class Map extends MapValues {
     }
 
     private void loadBinary() {
+
         Pixmap pixmap = new Pixmap(Gdx.files.internal("levels.png"));
         setTiles(new int[pixmap.getWidth()][pixmap.getHeight()]);
         for (int y = 0; y < 35; y++) {
+
+            Gdx.app.debug("Cuboc", "MAP - LOAD BINARY 1");
             for (int x = 0; x < 150; x++) {
                 int pix = (pixmap.getPixel(x, y) >>> 8) & 0xffffff;
+                /*Gdx.app.debug("Cuboc", "MAP - LOAD BINARY 2, (y, x): ("
+                        + y + "," + x + ") "
+                        + " valor de pix: " + pix);
+                */
+                
+                //Gdx.app.debug("Cuboc", "match(pix, getEND(): " + match(pix, getEND()));
                 if (match(pix, getSTART())) {
                     Dispenser dispenser = new Dispenser(x, pixmap.getHeight() - 1 - y);
                     getDispensers().add(dispenser);
@@ -44,7 +54,6 @@ public class Map extends MapValues {
                 } else if (match(pix, getDISPENSER())) {
                     Dispenser dispenser = new Dispenser(x, pixmap.getHeight() - 1 - y);
                     getDispensers().add(dispenser);
-                } else if (match(pix, getROCKET())) {
                     Rocket rocket = new Rocket(this, x, pixmap.getHeight() - 1 - y);
                     getRockets().add(rocket);
                 } else if (match(pix, getMOVING_SPIKES())) {

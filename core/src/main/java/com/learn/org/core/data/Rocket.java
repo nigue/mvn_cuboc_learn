@@ -1,5 +1,6 @@
 package com.learn.org.core.data;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.RocketValues;
@@ -17,6 +18,8 @@ public class Rocket extends RocketValues {
     private List<Rectangle> er;
 
     public Rocket(Map map, float x, float y) {
+    
+        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR");
         this.map = map;
         this.stateTime = 0;
         this.state = getFLYING();
@@ -33,8 +36,13 @@ public class Rocket extends RocketValues {
         this.bounds.height = 0.6f;
         this.vel.set(-getVELOCITY(), 0);
 
+        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 2");
+        Rectangle r = new Rectangle();
+        this.er.add(r);
+        
+        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 3");
         this.er.add(new Rectangle());
-        this.er.add(new Rectangle());
+        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 4");
         this.er.add(new Rectangle());
         this.er.add(new Rectangle());
     }

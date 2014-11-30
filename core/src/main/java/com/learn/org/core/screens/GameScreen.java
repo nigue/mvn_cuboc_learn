@@ -25,8 +25,11 @@ public class GameScreen extends CubocScreen {
     public void show() {
         Gdx.app.debug("Cuboc", "GameScreen - SHOW");
         setMap(new Map());
+        Gdx.app.debug("Cuboc", "GameScreen - ////// 1");
         setRenderer(new MapRenderer(getMap()));
+        Gdx.app.debug("Cuboc", "GameScreen - ////// 2");
         setControlRenderer(new OnscreenControlRenderer(getMap()));
+        Gdx.app.debug("Cuboc", "GameScreen - ////// 3");
     }
 
     @Override

@@ -10,7 +10,6 @@ public class Cuboc extends Game {
     @Override
     public void create() {
         Gdx.app.setLogLevel(Application.LOG_DEBUG);
-        Gdx.app.debug("Cuboc", "inicio de programa");
         setScreen(new MainMenu(this));
     }
 }
