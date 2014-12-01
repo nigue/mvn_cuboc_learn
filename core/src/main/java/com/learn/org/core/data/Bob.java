@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.BobValues;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Bob extends BobValues {
@@ -36,6 +37,7 @@ public class Bob extends BobValues {
         this.bounds.height = 0.8f;
         this.bounds.x = pos.x + 0.2f;
         this.bounds.y = pos.y;
+        this.er = new ArrayList<Rectangle>();
         this.er.add(new Rectangle());
         this.er.add(new Rectangle());
         this.er.add(new Rectangle());

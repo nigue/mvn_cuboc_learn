@@ -5,6 +5,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.CubeValues;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Cube extends CubeValues {
@@ -39,6 +40,7 @@ public class Cube extends CubeValues {
         this.followButtonRect = new Rectangle(480 - 64, 320 - 138, 64, 64);
         this.dpadRect = new Rectangle(0, 0, 128, 128);
         this.target = new Vector2();
+        this.er = new ArrayList<Rectangle>();
         this.er.add(new Rectangle());
         this.er.add(new Rectangle());
         this.er.add(new Rectangle());

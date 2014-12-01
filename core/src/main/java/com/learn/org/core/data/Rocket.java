@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.RocketValues;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Rocket extends RocketValues {
@@ -35,16 +36,21 @@ public class Rocket extends RocketValues {
         this.bounds.width = 0.6f;
         this.bounds.height = 0.6f;
         this.vel.set(-getVELOCITY(), 0);
-
+this.er = new ArrayList<Rectangle>();
         Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 2");
-        Rectangle r = new Rectangle();
-        this.er.add(r);
-        
+//        Rectangle r = new Rectangle();
+//        this.er.add(r);
+  addRectagle();
         Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 3");
-        this.er.add(new Rectangle());
         Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 4");
-        this.er.add(new Rectangle());
-        this.er.add(new Rectangle());
+    }
+    
+    public final void addRectagle(){
+        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 2.5");
+        getEr().add(new Rectangle());
+        getEr().add(new Rectangle());
+        getEr().add(new Rectangle());
+        getEr().add(new Rectangle());
     }
 
     public void update(float deltaTime) {
