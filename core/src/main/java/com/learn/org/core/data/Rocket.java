@@ -19,8 +19,7 @@ public class Rocket extends RocketValues {
     private List<Rectangle> er;
 
     public Rocket(Map map, float x, float y) {
-    
-        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR");
+
         this.map = map;
         this.stateTime = 0;
         this.state = getFLYING();
@@ -36,17 +35,11 @@ public class Rocket extends RocketValues {
         this.bounds.width = 0.6f;
         this.bounds.height = 0.6f;
         this.vel.set(-getVELOCITY(), 0);
-this.er = new ArrayList<Rectangle>();
-        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 2");
-//        Rectangle r = new Rectangle();
-//        this.er.add(r);
-  addRectagle();
-        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 3");
-        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 4");
+        this.er = new ArrayList<Rectangle>();
+        addRectagle();
     }
-    
-    public final void addRectagle(){
-        Gdx.app.debug("Cuboc", "ROCKET CONSTRUCTOR 2.5");
+
+    public final void addRectagle() {
         getEr().add(new Rectangle());
         getEr().add(new Rectangle());
         getEr().add(new Rectangle());

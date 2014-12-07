@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.BobValues;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Bob extends BobValues {
@@ -24,7 +25,7 @@ public class Bob extends BobValues {
     public Bob(Map map, float x, float y) {
         this.pos = new Vector2();
         this.accel = new Vector2();
-        this.accel = new Vector2();
+        this.vel = new Vector2();
         this.bounds = new Rectangle();
         this.state = getSPAWN();
         this.stateTime = 0;
@@ -119,10 +120,15 @@ public class Bob extends BobValues {
     }
 
     private void tryMove() {
-        getBounds().setX(1 + getVel().x);
+        getBounds().setX(getBounds().getX() + getVel().x);
+//                    Gdx.app.debug("Cuboc", "RECIEN getVel().x: " + getVel().x);
         fetchCollidableRects();
         for (Rectangle rect : getEr()) {
+            
+//	    Gdx.app.debug("Cuboc", "ENTRO tryMove(): " + rect.toString() + " | " + getBounds().toString() + " | " + getBounds().overlaps(rect));
+
             if (getBounds().overlaps(rect)) {
+//                    Gdx.app.debug("Cuboc", "ENTRO tryMove()");
                 if (getVel().x < 0) {
                     getBounds().setX(rect.x + rect.width + 0.01f);
                 } else {
@@ -131,7 +137,7 @@ public class Bob extends BobValues {
                 getVel().x = 0;
             }
         }
-        getBounds().setY(1 + getVel().y);
+        getBounds().setY(getBounds().getY() + getVel().y);
         fetchCollidableRects();
 
         for (Rectangle rect : getEr()) {
@@ -164,46 +170,68 @@ public class Bob extends BobValues {
         int p4y = (int) (getBounds().getY() + getBounds().getHeight());
 
         int[][] tiles = getMap().getTiles();
-        int tile1 = tiles[p1x][getMap().getTiles()[0].length - 1 - p1y];
-        int tile2 = tiles[p2x][getMap().getTiles()[0].length - 1 - p2y];
-        int tile3 = tiles[p3x][getMap().getTiles()[0].length - 1 - p3y];
-        int tile4 = tiles[p4x][getMap().getTiles()[0].length - 1 - p4y];
 
-        if (getState() != getDYING() && (getMap().isDeadly(tile1) || getMap().isDeadly(tile2)
-                || getMap().isDeadly(tile3) || getMap().isDeadly(tile4))) {
-            setState(getDYING());
-            setStateTime(0);
-        }
+//        if (p1x == 1 && (getMap().getTiles()[0].length - 1 - p1y) == 160) {
+//
+//            Gdx.app.debug("Cuboc", "ERROR");
+//            Gdx.app.debug("Cuboc", "ERROR - " + getMap().getTiles()[1][159]);
+//        }
+//        try {
+//        String data1 = "getBounds().getX(): " + getBounds().getX()
+//                + " | Math.floor(getBounds().getY()): " + Math.floor(getBounds().getY())
+//                + " | getBounds().getWidth(): " + getBounds().getWidth()
+//                + " | getBounds().getHeight(): " + getBounds().getHeight();
+//        String log = "[" +p1x+","+(getMap().getTiles()[0].length - 1 - p1y)+ "]"
+//        +"[" +p2x+","+(getMap().getTiles()[0].length - 1 - p2y)+ "]"
+//        +"[" +p3x+","+(getMap().getTiles()[0].length - 1 - p3y)+ "]"
+//        +"[" +p4x+","+(getMap().getTiles()[0].length - 1 - p4y)+ "] -> " + getMap().getTiles()[0].length;
+//        Gdx.app.debug("Cuboc", log + " ~ " + data1);
+            int tile1 = tiles[p1x][getMap().getTiles()[0].length - 1 - p1y];
+            int tile2 = tiles[p2x][getMap().getTiles()[0].length - 1 - p2y];
+            int tile3 = tiles[p3x][getMap().getTiles()[0].length - 1 - p3y];
+            int tile4 = tiles[p3x][getMap().getTiles()[0].length - 1 - p4y];
 
-        if (tile1 == Map.getTILE()) {
-            getEr().get(0).set(p1x, p1y, 1, 1);
-        } else {
-            getEr().get(0).set(-1, -1, 0, 0);
-        }
-        if (tile2 == Map.getTILE()) {
-            getEr().get(1).set(p2x, p2y, 1, 1);
-        } else {
-            getEr().get(1).set(-1, -1, 0, 0);
-        }
-        if (tile3 == Map.getTILE()) {
-            getEr().get(2).set(p3x, p3y, 1, 1);
-        } else {
-            getEr().get(2).set(-1, -1, 0, 0);
-        }
-        if (tile4 == Map.getTILE()) {
-            getEr().get(3).set(p4x, p4y, 1, 1);
-        } else {
-            getEr().get(3).set(-1, -1, 0, 0);
-        }
+            if (getState() != getDYING() && (getMap().isDeadly(tile1) || getMap().isDeadly(tile2)
+                    || getMap().isDeadly(tile3) || getMap().isDeadly(tile4))) {
+                setState(getDYING());
+                setStateTime(0);
+            }
 
-        if (getMap().getCube().getState() == Cube.getFIXED()) {
-            getEr().get(4).setX(getMap().getCube().getBounds().getX());
-            getEr().get(4).setY(getMap().getCube().getBounds().getY());
-            getEr().get(4).setWidth(getMap().getCube().getBounds().getWidth());
-            getEr().get(4).setHeight(getMap().getCube().getBounds().getHeight());
-        } else {
-            getEr().get(4).set(-1, -1, 0, 0);
-        }
+            if (tile1 == Map.getTILE()) {
+                getEr().get(0).set(p1x, p1y, 1, 1);
+            } else {
+                getEr().get(0).set(-1, -1, 0, 0);
+            }
+            if (tile2 == Map.getTILE()) {
+                getEr().get(1).set(p2x, p2y, 1, 1);
+            } else {
+                getEr().get(1).set(-1, -1, 0, 0);
+            }
+            if (tile3 == Map.getTILE()) {
+                getEr().get(2).set(p3x, p3y, 1, 1);
+            } else {
+                getEr().get(2).set(-1, -1, 0, 0);
+            }
+            if (tile4 == Map.getTILE()) {
+                getEr().get(3).set(p4x, p4y, 1, 1);
+            } else {
+                getEr().get(3).set(-1, -1, 0, 0);
+            }
+
+            if (getMap().getCube().getState() == Cube.getFIXED()) {
+                getEr().get(4).setX(getMap().getCube().getBounds().getX());
+                getEr().get(4).setY(getMap().getCube().getBounds().getY());
+                getEr().get(4).setWidth(getMap().getCube().getBounds().getWidth());
+                getEr().get(4).setHeight(getMap().getCube().getBounds().getHeight());
+            } else {
+                getEr().get(4).set(-1, -1, 0, 0);
+            }
+
+//        } catch (ArrayIndexOutOfBoundsException ex) {
+//            int data = getMap().getTiles()[0].length - 1 - p1y;
+//            Gdx.app.debug("Cuboc", "BOB - NO PUEDO TOMAR EL VALOR [" + p1x + "," + data + "]");
+//        }
+
     }
 
     public Vector2 getPos() {

@@ -4,45 +4,42 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.utils.Array;
 import com.learn.org.core.data.value.MapValues;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Map extends MapValues {
-
+    
     private int[][] tiles;
     private Bob bob;
     private Cube cube;
-    private Array<Dispenser> dispensers;
+    private List<Dispenser> dispensers;
     private Dispenser activeDispenser;
-    private Array<Rocket> rockets;
-    private Array<MovingSpikes> movingSpikes;
+    private List<Rocket> rockets;
+    private List<MovingSpikes> movingSpikes;
     private Array<Laser> lasers;
     private EndDoor endDoor;
-
+    
     public Map() {
-
-        this.dispensers = new Array<Dispenser>();
+        
+        this.dispensers = new ArrayList<Dispenser>();
         this.activeDispenser = null;
-        this.rockets = new Array<Rocket>();
-        this.movingSpikes = new Array<MovingSpikes>();
+        this.rockets = new ArrayList<Rocket>();
+        this.movingSpikes = new ArrayList<MovingSpikes>();
         this.lasers = new Array<Laser>();
-
+        
         loadBinary();
     }
-
+    
     private void loadBinary() {
-
+        
         Pixmap pixmap = new Pixmap(Gdx.files.internal("levels.png"));
         setTiles(new int[pixmap.getWidth()][pixmap.getHeight()]);
+        
+        Gdx.app.debug("Cuboc", "MAP - tiles: " + pixmap.getWidth() + ", " + pixmap.getHeight());
         for (int y = 0; y < 35; y++) {
-
-            Gdx.app.debug("Cuboc", "MAP - LOAD BINARY 1");
+            
             for (int x = 0; x < 150; x++) {
                 int pix = (pixmap.getPixel(x, y) >>> 8) & 0xffffff;
-                /*Gdx.app.debug("Cuboc", "MAP - LOAD BINARY 2, (y, x): ("
-                        + y + "," + x + ") "
-                        + " valor de pix: " + pix);
-                */
-                
-                //Gdx.app.debug("Cuboc", "match(pix, getEND(): " + match(pix, getEND()));
                 if (match(pix, getSTART())) {
                     Dispenser dispenser = new Dispenser(x, pixmap.getHeight() - 1 - y);
                     getDispensers().add(dispenser);
@@ -67,17 +64,22 @@ public class Map extends MapValues {
                 }
             }
         }
-
-        for (int i = 0; i < getMovingSpikes().size; i++) {
-            getMovingSpikes().get(i).init();
+        for (MovingSpikes movingSpike : getMovingSpikes()) {
+            movingSpike.init();
         }
+//        for (int i = 0; i < getMovingSpikes().size; i++) {
+//            getMovingSpikes().get(i).init();
+//        }
         for (int i = 0; i < getLasers().size; i++) {
             getLasers().get(i).init();
         }
     }
-
+    
     public void update(float deltaTime) {
+        
         getBob().update(deltaTime);
+        
+        Gdx.app.debug("Cuboc", "Map - getBob().getState(): " + getBob().getState());
         if (getBob().getState() == Bob.getDEAD()) {
             setBob(new Bob(this, getActiveDispenser().getBounds().x, getActiveDispenser().getBounds().y));
         }
@@ -85,102 +87,100 @@ public class Map extends MapValues {
         if (getCube().getState() == Cube.getDEAD()) {
             setCube(new Cube(this, getBob().getBounds().x, getBob().getBounds().y));
         }
-        for (int i = 0; i < getDispensers().size; i++) {
-            if (getBob().getBounds().overlaps(getDispensers().get(i).getBounds())) {
-                setActiveDispenser(getDispensers().get(i));
+        for (Dispenser dispenser : getDispensers()) {
+            if (getBob().getBounds().overlaps(dispenser.getBounds())) {
+                setActiveDispenser(dispenser);
             }
         }
-        for (int i = 0; i < getRockets().size; i++) {
-            Rocket rocket = getRockets().get(i);
+        for (Rocket rocket : getRockets()) {
             rocket.update(deltaTime);
         }
-        for (int i = 0; i < getMovingSpikes().size; i++) {
-            MovingSpikes spikes = getMovingSpikes().get(i);
-            spikes.update(deltaTime);
+        for (MovingSpikes movingSpike : getMovingSpikes()) {
+            movingSpike.update(deltaTime);
         }
         for (int i = 0; i < getLasers().size; i++) {
             getLasers().get(i).update();
         }
     }
-
+    
     public boolean isDeadly(int tileId) {
         return tileId == getSPIKES();
     }
-
+    
     boolean match(int src, int dst) {
         return src == dst;
     }
-
+    
     public int[][] getTiles() {
         return tiles;
     }
-
+    
     public void setTiles(int[][] tiles) {
         this.tiles = tiles;
     }
-
+    
     public Bob getBob() {
         return bob;
     }
-
+    
     public void setBob(Bob bob) {
         this.bob = bob;
     }
-
+    
     public Cube getCube() {
         return cube;
     }
-
+    
     public void setCube(Cube cube) {
         this.cube = cube;
     }
-
-    public Array<Dispenser> getDispensers() {
-        return dispensers;
-    }
-
-    public void setDispensers(Array<Dispenser> dispensers) {
-        this.dispensers = dispensers;
-    }
-
+    
     public Dispenser getActiveDispenser() {
         return activeDispenser;
     }
-
+    
     public void setActiveDispenser(Dispenser activeDispenser) {
         this.activeDispenser = activeDispenser;
     }
-
-    public Array<Rocket> getRockets() {
-        return rockets;
-    }
-
-    public void setRockets(Array<Rocket> rockets) {
-        this.rockets = rockets;
-    }
-
-    public Array<MovingSpikes> getMovingSpikes() {
-        return movingSpikes;
-    }
-
-    public void setMovingSpikes(Array<MovingSpikes> movingSpikes) {
-        this.movingSpikes = movingSpikes;
-    }
-
+    
     public Array<Laser> getLasers() {
         return lasers;
     }
-
+    
     public void setLasers(Array<Laser> lasers) {
         this.lasers = lasers;
     }
-
+    
     public EndDoor getEndDoor() {
         return endDoor;
     }
-
+    
     public void setEndDoor(EndDoor endDoor) {
         this.endDoor = endDoor;
     }
-
+    
+    public List<Dispenser> getDispensers() {
+        return dispensers;
+    }
+    
+    public void setDispensers(List<Dispenser> dispensers) {
+        this.dispensers = dispensers;
+    }
+    
+    public List<Rocket> getRockets() {
+        return rockets;
+    }
+    
+    public void setRockets(List<Rocket> rockets) {
+        this.rockets = rockets;
+    }
+    
+    public List<MovingSpikes> getMovingSpikes() {
+        return movingSpikes;
+    }
+    
+    public void setMovingSpikes(List<MovingSpikes> movingSpikes) {
+        this.movingSpikes = movingSpikes;
+    }
+    
 }
