@@ -150,10 +150,9 @@ public class MapRenderer {
     private void renderLaserBeams() {
         getCam().update(false);
         getRenderer().begin(getCam().combined, GL20.GL_LINES);
-        for (int i = 0; i < getMap().getLasers().size; i++) {
-            Laser laser = getMap().getLasers().get(i);
-            float sx = laser.getStartPoint().x, sy = laser.getStartPoint().y;
-            float ex = laser.getCappedEndPoint().x, ey = laser.getCappedEndPoint().y;
+        for (Laser laserList : getMap().getLasers()) {
+            float sx = laserList.getStartPoint().x, sy = laserList.getStartPoint().y;
+            float ex = laserList.getCappedEndPoint().x, ey = laserList.getCappedEndPoint().y;
             getRenderer().color(0, 1, 0, 1);
             getRenderer().vertex(sx, sy, 0);
             getRenderer().color(0, 1, 0, 1);

@@ -6,7 +6,6 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.learn.org.core.data.value.BobValues;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class Bob extends BobValues {
@@ -64,6 +63,7 @@ public class Bob extends BobValues {
         tryMove();
         getVel().scl(1.0f / deltaTime);
 
+        //Gdx.app.debug("Cuboc", "Bob - getStateTime(): " + getStateTime());
         if (getState() == getSPAWN()) {
             if (getStateTime() > 0.4f) {
                 setState(getIDLE());
@@ -76,7 +76,7 @@ public class Bob extends BobValues {
             }
         }
 
-        setStateTime(+deltaTime);
+        setStateTime(getStateTime()+deltaTime);
     }
 
     private void processKeys() {
