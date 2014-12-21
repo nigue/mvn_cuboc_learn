@@ -145,6 +145,114 @@ public class MapRenderer {
         getCam().update();
 
         renderLaserBeams();
+
+        getCache().setProjectionMatrix(getCam().combined);
+        Gdx.gl.glDisable(GL20.GL_BLEND);
+        getCache().begin();
+        int b = 0;
+        for (int blockY = 0; blockY < 4; blockY++) {
+            for (int blockX = 0; blockX < 6; blockX++) {
+                getCache().draw(getBlocks()[blockX][blockY]);
+                b++;
+            }
+        }
+        getCache().end();
+        setStateTime(getStateTime() + deltaTime);
+        getBatch().setProjectionMatrix(getCam().combined);
+        getBatch().begin();
+        renderDispensers();
+        if (getMap().getEndDoor() != null) {
+            getBatch().draw(getEndDoor(), getMap().getEndDoor().getBounds().x, getMap().getEndDoor().getBounds().y, 1, 1);
+        }
+        renderLasers();
+        renderMovingSpikes();
+        renderBob();
+        renderCube();
+        renderRockets();
+        getBatch().end();
+        renderLaserBeams();
+    }
+
+    private void renderDispensers() {
+        for (Dispenser dispenserAlpha : getMap().getDispensers()) {
+            getBatch().draw(getDispenser(), dispenserAlpha.getBounds().x, dispenserAlpha.getBounds().y, 1, 1);
+        }
+    }
+
+    private void renderLasers() {
+        for (Laser laserAlpha : getMap().getLasers()) {
+            getBatch().draw(getLaser(), laserAlpha.getPos().x, laserAlpha.getPos().y, 0.5f, 0.5f, 1, 1, 1, 1, laserAlpha.getAngle());
+        }
+    }
+
+    private void renderMovingSpikes() {
+        for (MovingSpikes spikesAlpha : getMap().getMovingSpikes()) {
+            getBatch().draw(getMovingSpikes(), spikesAlpha.getPos().x, spikesAlpha.getPos().y, 0.5f, 0.5f, 1, 1, 1, 1, spikesAlpha.getAngle());
+        }
+    }
+
+    private void renderBob() {
+        Animation anim = null;
+        boolean loop = true;
+        if (getMap().getBob().getState() == Bob.getRUN()) {
+            if (getMap().getBob().getDir() == Bob.getLEFT()) {
+                anim = getBobLeft();
+            } else {
+                anim = getBobRight();
+            }
+        }
+        if (getMap().getBob().getState() == Bob.getIDLE()) {
+            if (getMap().getBob().getDir() == Bob.getLEFT()) {
+                anim = getBobIdleLeft();
+            } else {
+                anim = getBobIdleRight();
+            }
+        }
+        if (getMap().getBob().getState() == Bob.getJUMP()) {
+            if (getMap().getBob().getDir() == Bob.getLEFT()) {
+                anim = getBobJumpLeft();
+            } else {
+                anim = getBobJumpRight();
+            }
+        }
+        if (getMap().getBob().getState() == Bob.getSPAWN()) {
+            anim = getSpawn();
+            loop = false;
+        }
+        if (getMap().getBob().getState() == Bob.getDYING()) {
+            anim = getDying();
+            loop = false;
+        }
+        try {
+            getBatch().draw(anim.getKeyFrame(getMap().getBob().getStateTime(), loop), getMap().getBob().getPos().x, getMap().getBob().getPos().y, 1, 1);
+        } catch (NullPointerException e) {
+            Gdx.app.error("Cubocy", "MapRenderer - error - " + e.getLocalizedMessage());
+        }
+    }
+
+    private void renderCube() {
+        if (getMap().getCube().getState() == Cube.getFOLLOW()) {
+            getBatch().draw(getCube(), getMap().getCube().getPos().x, getMap().getCube().getPos().y, 1.5f, 1.5f);
+        }
+        if (getMap().getCube().getState() == Cube.getFIXED()) {
+            getBatch().draw(getCubeFixed().getKeyFrame(getMap().getCube().getStateTime(), false), getMap().getCube().getPos().x, getMap().getCube().getPos().y, 1.5f, 1.5f);
+        }
+        if (getMap().getCube().getState() == Cube.getCONTROLLED()) {
+            getBatch().draw(getCubeControlled(), getMap().getCube().getPos().x, getMap().getCube().getPos().y, 1.5f, 1.5f);
+        }
+    }
+
+    private void renderRockets() {
+        for (Rocket rocketAlpha : getMap().getRockets()) {
+            if (rocketAlpha.getState() == Rocket.getFLYING()) {
+                TextureRegion frame = getRocket().getKeyFrame(rocketAlpha.getStateTime(), true);
+                getBatch().draw(frame, rocketAlpha.getPos().x, rocketAlpha.getPos().y, 0.5f, 0.5f, 1, 1, 1, 1, rocketAlpha.getVel().angle());
+            } else {
+                TextureRegion frame = getRocketExplosion().getKeyFrame(rocketAlpha.getStateTime(), false);
+                getBatch().draw(frame, rocketAlpha.getPos().x, rocketAlpha.getPos().y, 1, 1);
+            }
+            getBatch().draw(getRocketPad(), rocketAlpha.getStartPos().x, rocketAlpha.getStartPos().y, 1, 1);
+        }
     }
 
     private void renderLaserBeams() {

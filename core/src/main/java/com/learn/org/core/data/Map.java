@@ -84,7 +84,7 @@ public class Map extends MapValues {
             setCube(new Cube(this, getBob().getBounds().x, getBob().getBounds().y));
         }
         for (Dispenser dispenser : getDispensers()) {
-            Gdx.app.debug("Cuboc", "Map - overlaps: " + getBob().getBounds().overlaps(dispenser.getBounds()));
+            //Gdx.app.debug("Cuboc", "Map - overlaps: " + getBob().getBounds().overlaps(dispenser.getBounds()));
             if (getBob().getBounds().overlaps(dispenser.getBounds())) {
                 setActiveDispenser(dispenser);
             }
