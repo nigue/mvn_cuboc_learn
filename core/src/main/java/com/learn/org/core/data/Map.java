@@ -50,6 +50,7 @@ public class Map extends MapValues {
                 } else if (match(pix, getDISPENSER())) {
                     Dispenser dispenser = new Dispenser(x, pixmap.getHeight() - 1 - y);
                     getDispensers().add(dispenser);
+                } else if (match(pix, getROCKET())) {
                     Rocket rocket = new Rocket(this, x, pixmap.getHeight() - 1 - y);
                     getRockets().add(rocket);
                 } else if (match(pix, getMOVING_SPIKES())) {
