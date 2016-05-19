@@ -15,6 +15,7 @@
 	<properties>
 		<gwt.module>com.learn.org.Cuboc</gwt.module>
 		<gwt.name>mvn_cuboc_learn</gwt.name>
+
                 <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
